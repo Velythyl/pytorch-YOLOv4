@@ -346,8 +346,13 @@ class Yolo_dataset(Dataset):
             swidth = ow - pleft - pright
             sheight = oh - ptop - pbot
 
-            truth, min_w_h = fill_truth_detection(bboxes, self.cfg.boxes, self.cfg.classes, flip, pleft, ptop, swidth,
-                                                  sheight, self.cfg.w, self.cfg.h)
+            try:
+                truth, min_w_h = fill_truth_detection(bboxes, self.cfg.boxes, self.cfg.classes, flip, pleft, ptop, swidth,
+                                                      sheight, self.cfg.w, self.cfg.h)
+            except Exception as e:
+                print(e)
+                print(f"The image {img_path} probably doesn't have a bounding box in it! Remove it")
+                exit(1)
             if (min_w_h / 8) < blur and blur > 1:  # disable blur if one of the objects is too small
                 blur = min_w_h / 8
 
@@ -423,6 +428,7 @@ def get_image_id(filename:str) -> int:
     >>> no = f"{int(no):04d}"
     >>> return int(lv+no)
     """
+    return int("".join(filter(str.isdigit, filename)))
     raise NotImplementedError("Create your own 'get_image_id' function")
     lv, no = os.path.splitext(os.path.basename(filename))[0].split("_")
     lv = lv.replace("level", "")

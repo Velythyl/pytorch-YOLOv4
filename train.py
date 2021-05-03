@@ -533,6 +533,8 @@ def get_args(**kwargs):
     #                     help='Batch size', dest='batchsize')
     parser.add_argument('-l', '--learning-rate', metavar='LR', type=float, nargs='?', default=0.001,
                         help='Learning rate', dest='learning_rate')
+    parser.add_argument('-e', '--epochs', metavar='EP', type=int, nargs='?', default=5,
+                        help='Number of training epochs', dest='TRAIN_EPOCHS')
     parser.add_argument('-f', '--load', dest='load', type=str, default=None,
                         help='Load model from a .pth file')
     parser.add_argument('-g', '--gpu', metavar='G', type=str, default='-1',
